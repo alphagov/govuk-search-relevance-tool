@@ -60,7 +60,11 @@ module Search
     end
 
     def documents_per_page
-      finder_content_item.default_documents_per_page
+      search_relevancy_prototype? ? 20 : finder_content_item.default_documents_per_page
+    end
+
+    def search_relevancy_prototype?
+      Rails.configuration.relevancy_prototype && (finder_content_item.base_path == "/search/all")
     end
 
     def return_fields_query
