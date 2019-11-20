@@ -1,3 +1,7 @@
+And /skip_this_scenario/ do
+  skip_this_scenario
+end
+
 Given(/^a collection of documents exist$/) do
   content_store_has_mosw_reports_finder
   stub_rummager_api_request

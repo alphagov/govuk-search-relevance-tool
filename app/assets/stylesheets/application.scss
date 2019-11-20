@@ -29,8 +29,25 @@ $govuk-use-legacy-palette: false;
 @import 'govuk_publishing_components/components/_skip-link';
 @import 'govuk_publishing_components/components/_subscription-links';
 @import 'govuk_publishing_components/components/_title';
+@import 'govuk_publishing_components/components/_panel';
 
 @import 'components/*';
 @import 'finder_frontend';
 @import 'views/search';
 @import 'views/brexit_checker_results_page';
+
+.js-enabled #global-cookie-message {
+  display: none !important;
+}
+
+.js-enabled #user-satisfaction-survey-container {
+  display: none !important;
+}
+
+.js-enabled #global-bar {
+  display: none !important;
+}
+
+.js-enabled #global-header-bar {
+  display: block !important;
+}

@@ -1,13 +1,32 @@
 <% content_for :head do %>
   <meta name="govuk:search-result-count" content="<%= result_set_presenter.total_count %>">
 <% end %>
-
-<div class="finder-results js-finder-results" data-module="track-click">
-  <%= render "govuk_publishing_components/components/document_list", {
-    items: local_assigns[:document_list_component_data],
-    remove_underline: true
-  } %>
-</div>
+<% if local_assigns[:display_grouped_results] %>
+  <ul class="finder-results js-finder-results" data-module="track-click">
+    <% local_assigns[:grouped_document_list_component_data].each do |group| %>
+      <li class="filtered-results__group">
+        <% if group[:group_name] %>
+          <h2 class="filtered-results__facet-heading"><%= group[:group_name] %></h2>
+        <% end %>
+        <%= render "govuk_publishing_components/components/document_list", {
+          items: group[:documents],
+          remove_underline: true
+        } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <div class="finder-results js-finder-results" data-module="track-click">
+    <% if Rails.configuration.relevancy_prototype && current_page?('/search/all') %>
+        <%= render "result" %>
+    <% else %>
+      <%= render "govuk_publishing_components/components/document_list", {
+        items: local_assigns[:document_list_component_data],
+        remove_underline: true
+     } %>
+    <% end %>
+  </div>
+<% end %>
 
 <% if local_assigns[:zero_results] %>
   <%= link_to "ecommerce data", "www.gov.uk",
@@ -21,7 +40,9 @@
     <p class='govuk-body govuk-!-font-weight-bold'>There are no matching results.</p>
     <p class='govuk-body'>Improve your search results by:</p>
     <ul class="govuk-list govuk-list--bullet">
-      <li>removing filters</li>
+      <% unless Rails.configuration.relevancy_prototype %>
+        <li>removing filters</li>
+      <% end %>
       <li>double-checking your spelling</li>
       <li>using fewer keywords</li>
       <li>searching for something less specific</li>

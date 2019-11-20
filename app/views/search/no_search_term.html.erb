@@ -1,11 +1,37 @@
-<% content_for :body_classes, "search" %>
-<% content_for :title, "Search" %>
-<% content_for :extra_headers do %>
-  <meta name="description"
-        content="Search GOV.UK." />
-<% end %>
+  <% content_for :body_classes, "search" %>
+  <% content_for :title, "Search" %>
+  <% content_for :extra_headers do %>
+    <meta name="description"
+          content="Search GOV.UK." />
+  <% end %>
 
-<main id="content" class="search-wrapper search-wrapper--no-search-term">
+  <main id="content" role="main" class="search-wrapper search-wrapper--no-search-term">
+    <% if Rails.configuration.relevancy_prototype %>
+      <% if flash[:notice] == "saved" %>
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-panel govuk-panel--confirmation govuk-panel--green govuk-!-margin-top-8">
+              <h1 class="govuk-panel__title">
+                Thank you
+              </h1>
+              <div class="govuk-panel__body">
+                <h2>Your scores have been saved.</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <% if flash[:alert] == "no-term" %>
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <div class="message message--alert">
+              <h2>There is a problem</h2>
+              <p class='govuk-error-message'>Please enter a search query</p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
   <form action="/search" method="get" accept-charset="utf-8" class="search-header" role="search">
     <%= render 'search_field' %>
   </form>

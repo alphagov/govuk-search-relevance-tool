@@ -16,12 +16,16 @@
 
   <body class="<%= yield :body_classes %>">
     <div id="wrapper">
-      <main id="content" class="finder-frontend-content">
+      <!-- <main id="content" class="finder-frontend-content">
+        <div class="finder-frontend"> -->
+      <main id="content" role="main" class="finder-frontend-content">
         <div class="finder-frontend">
           <%= yield %>
         </div>
       </main>
-      <%= render 'govuk_publishing_components/components/feedback' %>
+      <%# <%= render 'govuk_publishing_components/components/feedback' %>
     </div>
   </body>
 </html>
+
+<script>var relevancyPrototype = <%= Rails.configuration.relevancy_prototype %> </script>

@@ -10,7 +10,7 @@ Rails.application.configure do
 
   # Code is not reloaded between requests.
   config.cache_classes = true
-  config.cache_store = :dalli_store, nil, { namespace: :finder_frontend, compress: true } unless ENV["HEROKU_APP_NAME"]
+  config.cache_store = :dalli_store, nil, { namespace: :finder_frontend, compress: true } unless ENV["RELEVANCY_PROTOTYPE"]
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -20,7 +20,7 @@ Rails.application.configure do
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
-  config.action_controller.perform_caching = true
+  config.action_controller.perform_caching = false
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).

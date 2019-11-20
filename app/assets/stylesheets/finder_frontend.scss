@@ -266,7 +266,7 @@ mark {
 
 .result-info {
   margin: 0 0 govuk-spacing(4) 0;
-  border-bottom: solid 1px govuk-colour("black");
+  // border-bottom: solid 1px govuk-colour("black");
 
   .govuk-grid-column-two-thirds {
     text-align: left;
@@ -368,8 +368,83 @@ mark {
   margin-bottom: 20px;
   padding-bottom: 30px;
 }
+// remove separator and increase spacing between list items
+// later, propose both features as flags in the
+// "document list" govuk-publishing component
+.gem-c-document-list__item {
+  border: 0;
+  margin-bottom: govuk-spacing(4);
+  padding-bottom: govuk-spacing(0);
+  padding-left: govuk-spacing(3);
+  margin-left: -(govuk-spacing(3));
+}
 
 .facet-container {
   padding-left: 13px;
   padding-right: 13px;
+}
+
+// flash message
+.message {
+  margin-top: govuk-spacing(6);
+  margin-bottom: govuk-spacing(3);
+  padding: govuk-spacing(3) govuk-spacing(3) 0;
+  border-style: solid;
+  border-width: 3px;
+  border-color: govuk-colour("dark-grey", $legacy: "grey-1");
+
+  h2 {
+    @extend .govuk-heading-m;
+  }
+
+  p {
+    @extend .govuk-body;
+    color: govuk-colour("red");
+    font-weight: bold;
+  }
+}
+
+.message--notice {
+  border-color: govuk-colour("blue");
+}
+
+.message--alert {
+  border-color: govuk-colour("red");
+}
+.govuk-panel--green {
+  background-color: govuk-colour("green");
+  border-bottom: 0;
+}
+
+// hide footer categories
+
+.footer-categories {
+  display: none;
+}
+
+.govuk-details--offset {
+  margin-top: 30px;
+}
+
+.govuk-details--hide-on-mobile {
+  display: none;
+  @include govuk-media-query($from: tablet) {
+    display: block;
+  }
+}
+
+.govuk-details--show-on-mobile {
+  @include govuk-media-query($from: tablet) {
+    display: none;
+  }
+}
+
+.app-feedback-prompt {
+  background-color: govuk-colour("blue");
+  padding: 10px 15px 0;
+  color: govuk-colour("white");
+  a,
+  a:visited {
+    color: govuk-colour("white");
+  }
 }

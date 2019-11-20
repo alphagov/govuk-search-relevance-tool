@@ -20,32 +20,56 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <% if content_item.all_content_finder? %>
-        <h1 class="app-c-search-page-heading">Search<span class="govuk-visually-hidden"> all content</span></h1>
-        <div id="keywords" class="app-patch--search-input-override">
-          <%= render "govuk_publishing_components/components/search", {
-            aria_controls: "js-search-results-info",
-            id: "finder-keyword-search",
-            name: "keywords",
-            type: 'search',
-            value: result_set_presenter.user_supplied_keywords,
-          } %>
-        </div>
-        <div id="js-spelling-suggestions" class="spelling-suggestions"
-          data-analytics-ecommerce
-          data-ecommerce-start-index="1"
-          data-list-title="<%= content_item.title %> spelling suggestions"
-          data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
-          data-track-click-label="Spelling suggestions"
-          >
-          <%= render 'spelling_suggestion' %>
-        </div>
-        <button class="app-c-button-as-link app-mobile-filters-link js-show-mobile-filters"
-          data-toggle="mobile-filters-modal" data-target="facet-wrapper"
-          data-module="track-click" data-track-category="filterClicked"
-          data-track-action="mobile-filter-button" data-track-label="">
-          Filter <span class="govuk-visually-hidden"> results</span>
-          <span class="js-selected-filter-count"><%= sanitize facet_tags.display_total_selected_filters %></span>
-        </button>
+        <% if Rails.configuration.relevancy_prototype %>
+          <h1 class="app-c-search-page-heading">How relevant are these results?</h1>
+          <p class="govuk-body-l">
+            You don't have to enter a score for every result.
+          </p>
+          <div id="keywords" class="app-patch--search-input-override">
+            <%= render "govuk_publishing_components/components/search", {
+              size: "large",
+              controls: "js-search-results-info",
+              id: "finder-keyword-search",
+              name: "keywords",
+              value: result_set_presenter.user_supplied_keywords,
+            } %>
+          </div>
+          <div id="js-spelling-suggestions" class="spelling-suggestions"
+            data-analytics-ecommerce
+            data-ecommerce-start-index="1"
+            data-list-title="<%= content_item.title %> spelling suggestions"
+            data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
+            data-track-click-label="Spelling suggestions"
+            >
+            <%= render 'spelling_suggestion' %>
+          </div>
+        <% else %>
+          <% label_text = capture do %>
+            <h1 class="app-c-search-page-heading">Search<span class="govuk-visually-hidden"> all content</span></h1>
+        <% end %>
+          <div id="keywords" class="app-patch--search-input-override">
+            <%= render "govuk_publishing_components/components/search", {
+              size: "large",
+              controls: "js-search-results-info",
+              id: "finder-keyword-search",
+              inline_label: false,
+              label: {
+                text: label_text,
+              },
+              name: "keywords",
+              value: result_set_presenter.user_supplied_keywords,
+            } %>
+          </div>
+          <div id="js-spelling-suggestions" class="spelling-suggestions"
+            data-analytics-ecommerce
+            data-ecommerce-start-index="1"
+            data-list-title="<%= content_item.title %> spelling suggestions"
+            data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
+            data-track-click-label="Spelling suggestions"
+            >
+            <%= render 'spelling_suggestion' %>
+          </div>
+        <% end %>
       <% elsif topic_finder?(filter_params) %>
         <%= link_to topic_finder_parent(filter_params)['title'], topic_finder_parent(filter_params)['base_path'], class: 'govuk-link topic-finder__taxon-link' %>
         <%= render partial: 'govuk_publishing_components/components/title', locals: {

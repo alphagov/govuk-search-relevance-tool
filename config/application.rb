@@ -1,10 +1,10 @@
 require_relative "boot"
 
-require "rails"
+require "rails/all"
 # Pick the frameworks you want:
 require "active_model/railtie"
 require "active_job/railtie"
-# require "active_record/railtie"
+require "active_record/railtie"
 # require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
@@ -31,6 +31,7 @@ module FinderFrontend
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.0
 
+    config.relevancy_prototype = true
     config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*yml")]
     config.action_view.raise_on_missing_translations = true
 
@@ -41,7 +42,7 @@ module FinderFrontend
 
     # Path within public/ where assets are compiled to
     config.assets.prefix = "/finder-frontend"
-
+    config.middleware.use ActionDispatch::Flash
     config.eager_load_paths << Rails.root.join("lib")
     config.autoload_paths << Rails.root.join("lib")
     # Settings in config/environments/* take precedence over those specified here.

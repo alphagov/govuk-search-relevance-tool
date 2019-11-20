@@ -1,3 +1,15 @@
+<% if flash[:alert] == "alert" %>
+  <div class="govuk-width-container">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="message message--alert">
+          <h2>There is a problem</h2>
+          <p class='govuk-error-message'>Please score at least one result.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
 <% if result_set_presenter.user_supplied_keywords.length > 0 %>
   <% content_for :title, "#{result_set_presenter.user_supplied_keywords} - #{content_item.title}" %>
 <% else %>
@@ -19,7 +31,6 @@
 
 <form method="get" action="<%= content_item.base_path %>" class="js-live-search-form">
   <input type="hidden" name="parent" value="<%= @parent %>">
-
   <% if topic_finder?(filter_params) && !content_item.all_content_finder? %>
     <%= render "govuk_publishing_components/components/inverse_header", {
       full_width: true
@@ -31,58 +42,106 @@
     <%= render partial: 'show_header', locals: { inverse: inverse,
                                                  page_metadata: page_metadata(content_item, filter_params) } %>
   <% end %>
-
+<% if Rails.configuration.relevancy_prototype && current_page?('/search/all') %>
+</form>
+<% end %>
   <div class="govuk-width-container">
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-third" role="search" aria-label="<%= content_item.title %>">
-        <%= render partial: 'facet_collection'%>
-      </div>
-
+      <% unless Rails.configuration.relevancy_prototype && current_page?('/search/all') %>
+        <div class="govuk-grid-column-one-third" role="search" aria-label="<%= content_item.title %>">
+          <%= render partial: 'facet_collection'%>
+        </div>
+      <% end %>
       <div class="govuk-grid-column-two-thirds js-live-search-results-block filtered-results"
         role="region"
         aria-label="<%= content_item.title %> search results"
-        data-analytics-ecommerce
-        data-ecommerce-start-index="<%= result_set_presenter.start_offset %>"
-        data-list-title="<%= content_item.title %>"
-        data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
-        <% unless result_set_presenter.sort_option.nil? %>
-          data-ecommerce-variant="<%= result_set_presenter.sort_option[:data_track_label] %>"
+        <% unless Rails.configuration.relevancy_prototype && current_page?('/search/all') %>
+          data-analytics-ecommerce
+          data-ecommerce-start-index="<%= result_set_presenter.start_offset %>"
+          data-list-title="<%= content_item.title %>"
+          data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
+          <% unless result_set_presenter.sort_option.nil? %>
+            data-ecommerce-variant="<%= result_set_presenter.sort_option[:data_track_label] %>"
+          <% end %>
         <% end %>
         >
         <div id="js-search-results-info" data-module="remove-filter" class="result-info">
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-third">
+              <% if (result_set_presenter.total_count > 0 ) && Rails.configuration.relevancy_prototype && current_page?('/search/all')%>
+            </div>
+              <% else %>
               <h2 class="result-region-header__counter" id="js-result-count">
-                <%= result_set_presenter.displayed_total %>
+               <%= result_set_presenter.displayed_total %>
               </h2>
             </div>
-            <div class="govuk-grid-column-two-thirds subscription-links subscription-links--desktop">
-              <%= render "govuk_publishing_components/components/subscription-links", signup_links %>
+              <% end %>
+              <% unless Rails.configuration.relevancy_prototype %>
+                <div class="govuk-grid-column-two-thirds subscription-links subscription-links--desktop">
+                  <%= render "govuk_publishing_components/components/subscription-links", signup_links %>
+                </div>
+              <% end %>
+          </div>
+          <% unless Rails.configuration.relevancy_prototype %>
+            <div id="js-facet-tag-wrapper" aria-live="assertive">
+              <%= render "facet_tags", facet_tags.present %>
             </div>
-          </div>
-          <div id="js-facet-tag-wrapper" class="facet-tags__container" aria-live="assertive">
-            <%= render "facet_tags", facet_tags.present %>
-          </div>
+          <% end %>
         </div>
 
         <div class="govuk-caption-l live-search-loading-message" id="js-loading-message"></div>
-
-        <div id="js-sort-options">
-          <%= render "sort_options", @sort_presenter.to_hash %>
-        </div>
-
+        <% unless Rails.configuration.relevancy_prototype %>
+          <div id="js-sort-options">
+            <%= render "sort_options", @sort_presenter.to_hash %>
+          </div>
+        <% end %>
         <div id="js-results">
           <%= render "search_results", result_set_presenter.search_results_content %>
         </div>
-
-        <div id="js-pagination">
-          <%= render "govuk_publishing_components/components/previous_and_next_navigation", @pagination.next_and_prev_links %>
-        </div>
-
-        <div class="subscription-links" id="subscription-links-footer">
-          <%= render "govuk_publishing_components/components/subscription-links", signup_links %>
-        </div>
+        <% unless Rails.configuration.relevancy_prototype && current_page?('/search/all')%>
+          <div id="js-pagination">
+            <%= render "govuk_publishing_components/components/previous_and_next_navigation", @pagination.next_and_prev_links %>
+          </div>
+        <% end %>
+        <% unless Rails.configuration.relevancy_prototype && current_page?('/search/all')%>
+          <div class="subscription-links" id="subscription-links-footer">
+            <%= render "govuk_publishing_components/components/subscription-links", signup_links %>
+          </div>
+        <% end %>
       </div>
+      <% if Rails.configuration.relevancy_prototype && current_page?('/search/all')%>
+        <div class="govuk-grid-column-one-third">
+          <details <% if session[:first_view] == "true" %> open <% end %> class="govuk-details govuk-details--offset govuk-details--hide-on-mobile" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">
+                How to score results
+              </span>
+            </summary>
+            <div class="govuk-details__text">
+              <h4 class="govuk-heading-s">Perfect</h4>
+              <p>
+                Based on your search term, the result is completely relevant. More than one result can be perfect.
+              </p>
+              <h4 class="govuk-heading-s">Good</h4>
+              <p>
+                The result is clearly reasonable. You are not surprised that the search term brought back this result.
+              </p>
+              <h4 class="govuk-heading-s">OK</h4>
+              <p>
+                You can see why we returned the result, but it isn't very helpful. For example, a search for
+                “Find my local council” may return a page about how to pay a parking charge to your local council. You can see why it appeared
+                (because it includes a reference to local councils) but it isn’t directly relevant for your search term.
+              </p>
+              <h4 class="govuk-heading-s">Bad</h4>
+              <p>
+                The result has no apparent relationship to your search term.
+              </p>
+            </div>
+          </details>
+        </div>
+      <% end %>
     </div>
   </div>
+<% unless Rails.configuration.relevancy_prototype %>
 </form>
+<% end %>

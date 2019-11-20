@@ -1,13 +1,52 @@
-<% label_text = capture do %>
-  <h1>Search GOV.UK</h1>
+<% if Rails.configuration.relevancy_prototype %>
+  <h1>Review GOV.UK search results</h1>
+  <p class="govuk-body">
+    Help us to improve GOV.UK by scoring our search results.
+    We will use your scores to improve the relevance of future search results.
+    Score as many results as you like. The more scores we get, the better GOV.UK will be.
+  </p>
+  <details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text">
+        How to score results
+      </span>
+    </summary>
+    <div class="govuk-details__text">
+        <h4 class="govuk-heading-s">Perfect</h4>
+        <p>
+          Based on your search term, the result is completely relevant. More than one result can be perfect.
+        </p>
+        <h4 class="govuk-heading-s">Good</h4>
+        <p>
+          The result is clearly reasonable. You are not surprised that the search term brought back this result.
+        </p>
+        <h4 class="govuk-heading-s">OK</h4>
+        <p>
+          You can see why we returned the result, but it isn't very helpful. For example, a search for
+          “Find my local council” may return a page about how to pay a parking charge to your local council. You can see why it appeared
+          (because it includes a reference to local councils) but it isn’t directly relevant for your search term.
+        </p>
+        <h4 class="govuk-heading-s">Bad</h4>
+        <p>
+          The result has no apparent relationship to your search term.
+        </p>
+    </div>
+  </details>
+  <%= render "govuk_publishing_components/components/search", {
+    size: "large",
+    id: "search-main"
+  } %>
+<% else %>
+  <% label_text = capture do %>
+    <h1>Search GOV.UK</h1>
+  <% end %>
+  <%= render "govuk_publishing_components/components/search", {
+    inline_label: false,
+    label_text: label_text,
+    size: "large",
+    id: "search-main"
+  } %>
 <% end %>
-
-<%= render "govuk_publishing_components/components/search", {
-  inline_label: false,
-  label_text: label_text,
-  size: "large",
-  id: "search-main"
-} %>
 
 <%= hidden_field_tag("filter_manual[]", params[:filter_manual]) if params[:filter_manual] %>
 <%= hidden_field_tag(:debug_score, params[:debug_score]) if params[:debug_score] %>

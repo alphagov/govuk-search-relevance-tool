@@ -1,0 +1,52 @@
+<% if result_set_presenter.total_count > 0 %>
+  <form action= "relevancy/create" method="post">
+    <div class="govuk-form-group govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        </legend>
+        <div class="govuk-radios govuk-radios--small govuk-radios--inline">
+
+        <ol class="gem-c-document-list gem-c-document-list--no-underline">
+          <% result_set_presenter.documents.first(10).each_with_index do |document, i| %>
+            <li class="gem-c-document-list__item gem-c-document-list__item--underline">
+              <%= link_to "#{document.title}", "#{document.absolute_path}", class: "gem-c-document-list__item-title" %>
+              <p class="gem-c-document-list__item-description"><%= document.description.html_safe %></p>
+              <%= render "govuk_publishing_components/components/radio", {
+              name: "scores[#{i}-#{document.send(:link)}]",
+              small: true,
+              items: [
+                {
+                  value: "perfect",
+                  text: "Perfect"
+                },
+                {
+                  value: "good",
+                  text: "Good"
+                },
+                {
+                  value: "ok",
+                  text: "OK"
+                },
+                {
+                  value: "bad",
+                  text: "Bad"
+                }
+              ]
+            } %>
+            </li>
+          <% end %>
+          </ol>
+          <%= render "govuk_publishing_components/components/input", {
+            label: {
+              text: "Enter the name of your organisation"
+            },
+            name: "org-name",
+            value: session[:orgName]
+          } %>
+          <input class="govuk-input govuk-visually-hidden" id="query" name="query" value="<%= params["keywords"] %>"> </input>
+        </div>
+      </fieldset>
+    </div>
+    <input type="submit" value="Submit"class="govuk-button"  ></input>
+  </form>
+<% end %>

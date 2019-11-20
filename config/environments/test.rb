@@ -4,6 +4,7 @@
 # and recreated between test runs. Don't rely on the data there!
 
 Rails.application.configure do
+  config.relevancy_prototype = false
   # Settings specified here will take precedence over those in config/application.rb.
 
   # We use the non-default in memory cache store for development purposes.

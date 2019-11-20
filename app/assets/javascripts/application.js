@@ -24,16 +24,11 @@
 
 jQuery(function ($) {
   var $form = $('.js-live-search-form')
-
   var $results = $('.js-live-search-results-block')
-
   var $elementsRequiringJavascript = $('.js-required')
-
   var $atomAutodiscoveryLink = $("link[type='application/atom+xml']").eq('0')
-
   $elementsRequiringJavascript.show()
-
-  if ($form.length && $results.length) {
+  if ((window.relevancyPrototype === false) && ($form.length && $results.length)) {
     // eslint-disable-next-line
     new GOVUK.LiveSearch({
       $form: $form,

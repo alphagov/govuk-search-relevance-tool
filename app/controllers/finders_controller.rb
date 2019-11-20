@@ -15,22 +15,24 @@ class FindersController < ApplicationController
       format.html do
         show_page_variables
       end
-      format.json do
-        @search_query = initialize_search_query
-        if content_item.is_search? || content_item.is_finder?
-          @spelling_suggestion_presenter = spelling_suggestion_presenter
-          render json: json_response
-        else
-          render json: {}, status: :not_found
+      unless Rails.configuration.relevancy_prototype
+        format.json do
+          @search_query = initialize_search_query
+          if content_item.is_search? || content_item.is_finder?
+            @spelling_suggestion_presenter = spelling_suggestion_presenter
+            render json: json_response
+          else
+            render json: {}, status: :not_found
+          end
         end
-      end
-      format.atom do
-        @search_query = initialize_search_query(is_for_feed: true)
-        if content_item.is_redirect?
-          redirect_to_destination
-        else
-          expires_in(ATOM_FEED_MAX_AGE, public: true)
-          @feed = AtomPresenter.new(content_item, results, facet_tags)
+        format.atom do
+          @search_query = initialize_search_query(is_for_feed: true)
+          if content_item.is_redirect?
+            redirect_to_destination
+          else
+            expires_in(ATOM_FEED_MAX_AGE, public: true)
+            @feed = AtomPresenter.new(content_item, results, facet_tags)
+          end
         end
       end
     end

@@ -15,6 +15,10 @@ module Services
     end
   end
 
+  def self.un_cached_content_item(base_path)
+    content_store.content_item(base_path)
+  end
+
   def self.rummager
     GdsApi::Search.new(Plek.find("search"))
   end

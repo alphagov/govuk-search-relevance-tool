@@ -8,6 +8,8 @@ module Search
     end
 
     def call
+      return order_by_relevance_query if search_relevancy_prototype?
+
       return order_by_release_timestamp if sort_option.present? && order_by_release_timestamp?(sort_option)
 
       return order_by_public_timestamp if override_sort_for_feed
@@ -27,6 +29,10 @@ module Search
   private
 
     attr_reader :content_item, :params, :keywords, :override_sort_for_feed
+
+    def search_relevancy_prototype?
+      Rails.configuration.relevancy_prototype
+    end
 
     def order_by_relevance?(sort_option)
       %w(relevance -relevance topic -topic).include?(sort_option.dig("key"))
