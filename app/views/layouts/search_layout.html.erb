@@ -15,7 +15,16 @@
   <body class="mainstream <%= yield :body_classes %>">
     <div id="wrapper" class="govuk-width-container">
       <%= yield %>
-      <%= render 'govuk_publishing_components/components/feedback' %>
+      <% if Rails.configuration.relevancy_prototype %>
+      <div class="app-feedback-prompt"><p>If you have any feedback about this tool please email us on 
+        <a class="govuk-!-font-weight-bold" href="mailto:relevance-tool-feedback@digital.cabinet-office.gov.uk">
+        relevance-tool-feedback@digital.cabinet-office.gov.uk</a>
+        </p>
+      </div>
+      <% end %>
+      <% unless Rails.configuration.relevancy_prototype %>
+        <%= render 'govuk_publishing_components/components/feedback' %>
+      <% end %>
     </div>
   </body>
 </html>

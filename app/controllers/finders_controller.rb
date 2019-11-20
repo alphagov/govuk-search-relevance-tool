@@ -16,13 +16,15 @@ class FindersController < ApplicationController
 
         show_page_variables
       end
-      format.json do
-        @search_query = initialize_search_query
-        if content_item.is_search? || content_item.is_finder?
-          @spelling_suggestion_presenter = spelling_suggestion_presenter
-          render json: json_response
-        else
-          render json: {}, status: :not_found
+      unless Rails.configuration.relevancy_prototype
+        format.json do
+          @search_query = initialize_search_query
+          if content_item.is_search? || content_item.is_finder?
+            @spelling_suggestion_presenter = spelling_suggestion_presenter
+            render json: json_response
+          else
+            render json: {}, status: :not_found
+          end
         end
       end
       format.atom do
