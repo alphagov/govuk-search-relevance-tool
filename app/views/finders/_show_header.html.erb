@@ -16,30 +16,57 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <% if content_item.all_content_finder? %>
-      <%= render "govuk_publishing_components/components/heading", {
-        text: sanitize("Search <span class='govuk-visually-hidden'>all content</span>"),
-        heading_level: 1,
-        font_size: "xl",
-        margin_bottom: 4
-        } %>
-        <div id="keywords" class="app-patch--search-input-override" role="search" aria-label="Sitewide">
-          <%= render "govuk_publishing_components/components/search", {
-            aria_controls: "js-search-results-info",
-            id: "finder-keyword-search",
-            name: "keywords",
-            type: 'search',
-            value: result_set_presenter.user_supplied_keywords,
-          } %>
-        </div>
-        <div id="js-spelling-suggestions" class="spelling-suggestions"
-          data-analytics-ecommerce
-          data-ecommerce-start-index="1"
-          data-list-title="<%= content_item.title %> spelling suggestions"
-          data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
-          data-track-click-label="Spelling suggestions"
-          >
-          <%= render 'spelling_suggestion' %>
-        </div>
+
+        <% if Rails.configuration.relevancy_prototype %>
+          <h1 class="app-c-search-page-heading">How relevant are these results?</h1>
+          <p class="govuk-body-l">
+            You don't have to enter a score for every result.
+          </p>
+          <div id="keywords" class="app-patch--search-input-override" role="search" aria-label="Sitewide">
+            <%= render "govuk_publishing_components/components/search", {
+              size: "large",
+              controls: "js-search-results-info",
+              id: "finder-keyword-search",
+              name: "keywords",
+              value: result_set_presenter.user_supplied_keywords,
+            } %>
+          </div>
+          <div id="js-spelling-suggestions" class="spelling-suggestions"
+            data-analytics-ecommerce
+            data-ecommerce-start-index="1"
+            data-list-title="<%= content_item.title %> spelling suggestions"
+            data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
+            data-track-click-label="Spelling suggestions"
+            >
+            <%= render 'spelling_suggestion' %>
+          </div>
+        <% else %>
+          <% label_text = capture do %>
+            <h1 class="app-c-search-page-heading">Search<span class="govuk-visually-hidden"> all content</span></h1>
+        <% end %>
+          <div id="keywords" class="app-patch--search-input-override" role="search" aria-label="Sitewide">
+            <%= render "govuk_publishing_components/components/search", {
+              size: "large",
+              controls: "js-search-results-info",
+              id: "finder-keyword-search",
+              inline_label: false,
+              label: {
+                text: label_text,
+              },
+              name: "keywords",
+              value: result_set_presenter.user_supplied_keywords,
+            } %>
+          </div>
+          <div id="js-spelling-suggestions" class="spelling-suggestions"
+            data-analytics-ecommerce
+            data-ecommerce-start-index="1"
+            data-list-title="<%= content_item.title %> spelling suggestions"
+            data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
+            data-track-click-label="Spelling suggestions"
+            >
+            <%= render 'spelling_suggestion' %>
+          </div>
+        <% end %>
       <% elsif topic_finder?(filter_params) %>
         <%= link_to topic_finder_parent(filter_params)['title'], topic_finder_parent(filter_params)['base_path'], class: 'govuk-link topic-finder__taxon-link' %>
         <%= render partial: 'govuk_publishing_components/components/title', locals: {

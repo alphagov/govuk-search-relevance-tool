@@ -485,6 +485,7 @@ DEPENDENCIES
   climate_control
   cucumber-rails
   dalli
+  database_cleaner-active_record
   dotenv-rails
   factory_bot
   gds-api-adapters
@@ -497,6 +498,7 @@ DEPENDENCIES
   govuk_test
   launchy
   listen
+  pg
   pry-byebug
   rails (= 6.1.5.1)
   rails-controller-testing

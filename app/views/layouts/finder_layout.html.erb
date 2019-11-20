@@ -18,8 +18,9 @@
 
   <body class="<%= yield :body_classes %>">
     <div id="wrapper">
-      <%= yield :breadcrumbs %>
-      <main id="content" class="finder-frontend-content">
+      <!-- <main id="content" class="finder-frontend-content">
+        <div class="finder-frontend"> -->
+      <main id="content" role="main" class="finder-frontend-content">
         <div class="finder-frontend">
           <%= yield %>
         </div>
@@ -27,3 +28,5 @@
     </div>
   </body>
 </html>
+
+<script>var relevancyPrototype = <%= Rails.configuration.relevancy_prototype %> </script>

@@ -6,11 +6,12 @@ Rails.application.routes.draw do
   get "/healthcheck/live", to: proc { [200, {}, %w[OK]] }
   get "/healthcheck/ready", to: proc { [200, {}, [JSON.generate({ status: :ok })]] }
 
-  root to: redirect("/development") unless Rails.env.test?
+  # root to: redirect("/development") unless Rails.env.test?
   get "/development" => "development#index"
 
   get "/search" => "search#index", as: :search
   get "/search/opensearch" => "search#opensearch"
+  root to: "search#index"
 
   if ENV["GOVUK_WEBSITE_ROOT"] =~ /integration/ || ENV["GOVUK_WEBSITE_ROOT"] =~ /staging/
     get "/test-search/search" => "search#index"
@@ -41,4 +42,6 @@ Rails.application.routes.draw do
 
   # Whatever else you do here... keep this at the bottom of the file
   get "/*slug" => "finders#show", as: :finder
+
+  post "/search/relevancy/create" => "relevancy#create"
 end
