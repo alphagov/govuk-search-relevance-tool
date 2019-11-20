@@ -5,6 +5,9 @@ class EmailAlertSubscriptionsController < ApplicationController
   helper_method :subscriber_list_params
 
   def create
+    if Rails.configuration.relevancy_prototype
+      redirect_to "/search"
+    end
     validate_choices!
     redirect_to email_alert_signup_api.signup_url
   rescue MissingFiltersError

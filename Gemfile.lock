@@ -276,6 +276,7 @@ GEM
     parallel (1.20.1)
     parser (3.0.1.1)
       ast (~> 2.4.1)
+    pg (1.2.3)
     phantomjs (2.1.1.0)
     plek (4.0.0)
     protobuf-cucumber (3.10.8)
@@ -492,6 +493,7 @@ DEPENDENCIES
   climate_control
   cucumber-rails
   dalli
+  database_cleaner-active_record
   dotenv-rails
   factory_bot
   gds-api-adapters
@@ -507,6 +509,7 @@ DEPENDENCIES
   jasmine_selenium_runner
   launchy
   listen
+  pg
   pry-byebug
   rails (= 6.1.4.1)
   rails-controller-testing

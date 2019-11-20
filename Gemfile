@@ -15,6 +15,7 @@ gem "sassc-rails"
 gem "slimmer"
 gem "uglifier"
 gem "whenever"
+gem "pg"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -28,6 +29,7 @@ end
 
 group :development, :test do
   gem "awesome_print"
+  gem "database_cleaner-active_record"
   gem "dotenv-rails"
   gem "govuk_schemas"
   gem "govuk_test"
