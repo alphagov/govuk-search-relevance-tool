@@ -9,6 +9,7 @@ ENV["GOVUK_WEBSITE_ROOT"] ||= "https://www.test.gov.uk"
 require File.expand_path("../config/environment", __dir__)
 require "rspec/rails"
 require "webmock/rspec"
+require "database_cleaner/active_record"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -28,6 +29,17 @@ FactoryBot.find_definitions
 
 RSpec.configure do |config|
   config.raise_errors_for_deprecations!
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 
   # ## Mock Framework
   #

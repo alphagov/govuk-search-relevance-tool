@@ -1,10 +1,10 @@
 require_relative "boot"
 
-require "rails"
+require "rails/all"
 # Pick the frameworks you want:
 require "active_model/railtie"
 require "active_job/railtie"
-# require "active_record/railtie"
+require "active_record/railtie"
 # require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
@@ -35,6 +35,7 @@ module FinderFrontend
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.relevancy_prototype = true
     config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*yml")]
     config.i18n.raise_on_missing_translations = true
 
