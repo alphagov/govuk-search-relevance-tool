@@ -46,6 +46,20 @@ class Document
     link
   end
 
+  def absolute_path
+    uri = URI(link)
+    uri.host ? link : File.join(website_root + link)
+  end
+
+  def website_root
+    Plek.new.website_root
+  end
+
+  def truncated_description
+    # This truncates the description at the end of the first sentence
+    description.gsub(/\.\s[A-Z].*/, ".") if description.present?
+  end
+
 private
 
   attr_reader :link, :document_hash
