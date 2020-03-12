@@ -13,7 +13,7 @@ gem "govuk_publishing_components", "~> 21.28.1"
 gem "rails", "~> 6.0.2"
 gem "slimmer", "~> 13.2.2"
 gem "pg"
-gem "sass-rails", "~> 6.0.0"
+gem "sass-rails", "5.1.0"
 gem "uglifier", "~> 4.2"
 gem "whenever", "~> 1.0.0"
 group :doc do
