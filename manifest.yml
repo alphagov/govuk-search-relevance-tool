@@ -1,0 +1,8 @@
+---
+applications:
+- name: govuk-search-relevance-tool
+  services:
+   - relevance-db-production
+  memory: 256M
+  buildpacks:
+  - ruby_buildpack
