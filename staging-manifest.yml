@@ -1,0 +1,8 @@
+---
+applications:
+- name: staging-search-relevance-tool
+  services:
+   - relevance-db-staging
+  memory: 256M
+  buildpacks:
+  - ruby_buildpack
