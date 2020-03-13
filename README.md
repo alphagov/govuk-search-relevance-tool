@@ -1,10 +1,17 @@
-# Search relevance scoring tool
+# GOV.UK Search Relevance Scoring Tool
 
-This prototype can be used to collect relevance judgements from users as they search gov.uk.
-
-The tool is deployed to heroku, and can be accessed here: https://search-result-relevancy.herokuapp.com/
+A tool that can be used to collect manual relevance judgements from users as they search gov.uk.
 
 ![Search relevance screenshot](docs/assets/relevancy-tool.png)
+
+## Dependencies
+
+Scores are written to a postgres database. So before you can you run the tool locally postgres must be installed and set up.
+
+```sh
+$ brew install postgresql
+$ brew services start postgresql
+```
 
 ## Running the tool locally
 
@@ -14,10 +21,19 @@ $ ./startup.sh --live
 
 ## Accessing the data
 
-```sh
-$ ./judgements.sh
-```
-This will pull the contents of the app's heroku database to your local machine, and then export the data as a csv. There are a couple of prerequisites before you can run this script:
+The scores can be pulled to your local machine via the cloud foundry plugin `conduit`. Before running these commands you will need to be added to the appropriate organisation on paas.
+1. [Raise a support ticket](https://www.cloud.service.gov.uk/support) to be added
+2. Install the [CF CLI](https://docs.cloud.service.gov.uk/get_started.html#set-up-the-cloud-foundry-command-line)
+3. [Login](https://docs.cloud.service.gov.uk/get_started.html#sign-in-to-cloud-foundry) to Cloud Foundry
+4. Select the organisation
+5. Select the space
+6. Get the service name by running:
 
-* You must have postgres installed and setup.
-* You need to be added as a collaborator to the heroku app.
+```sh
+$ cf services
+```
+6. Then run:
+
+```sh
+$ cf conduit SERVICE_NAME -- pg_dump --file NAME_YOU_CHOOSE
+```
