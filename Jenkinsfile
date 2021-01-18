@@ -7,13 +7,10 @@ node {
   govuk.buildProject(
     beforeTest: {
       stage("Lint Javascript") {
-        sh("yarn")
         sh("yarn run lint")
       }
     },
-    sassLint: false,
     publishingE2ETests: true,
-    brakeman: true,
-    rubyLintDiff: false
+    brakeman: true
   )
 }
