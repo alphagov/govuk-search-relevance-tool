@@ -498,7 +498,7 @@ DEPENDENCIES
   govuk_test
   launchy
   listen
-  pg
+  pg (~> 1.2, >= 1.2.3)
   pry-byebug
   rails (= 6.1.5.1)
   rails-controller-testing
