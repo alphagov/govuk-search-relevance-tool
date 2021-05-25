@@ -1,10 +1,11 @@
 require_relative "boot"
 
-require "rails/all"
+require "rails"
 # Pick the frameworks you want:
 require "active_model/railtie"
 require "active_job/railtie"
 require "active_record/railtie"
+require "active_record/connection_adapters"
 # require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
