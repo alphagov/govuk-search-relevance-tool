@@ -15,7 +15,7 @@ gem "sassc-rails"
 gem "slimmer"
 gem "uglifier"
 gem "whenever"
-gem "pg"
+gem 'pg', '~> 1.2', '>= 1.2.3'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
