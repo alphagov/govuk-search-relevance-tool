@@ -1,6 +1,6 @@
 # GOV.UK Search Relevance Scoring Tool
 
-A tool that can be used to collect manual relevance judgements from users as they search gov.uk.
+A tool that can be used to collect manual relevance judgements from users as they search GOV.UK.
 
 ![Search relevance screenshot](docs/assets/relevancy-tool.png)
 
