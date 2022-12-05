@@ -52,6 +52,8 @@
       window.ga('set', 'transport', 'beacon')
     }
 
+    this.Ga4EcommerceTracking()
+
     this.focusErrorMessagesOnLoad(this.$form)
 
     // prevent page refresh on search submit button click
@@ -106,11 +108,31 @@
   LiveSearch.prototype.startEnhancedEcommerceTracking = function startEnhancedEcommerceTracking () {
     if (this.$resultsWrapper) {
       this.$resultsWrapper.setAttribute('data-search-query', this.currentKeywords())
+      var sortedBy = this.$resultsWrapper.querySelector('.js-order-results')
+      if (sortedBy) {
+        this.$resultsWrapper.setAttribute('data-ecommerce-variant', sortedBy.options[sortedBy.selectedIndex].text)
+      }
     }
     if (this.$suggestionsBlock) {
       this.$suggestionsBlock.setAttribute('data-search-query', this.currentKeywords())
     }
     if (GOVUK.Ecommerce) { GOVUK.Ecommerce.start() }
+
+    this.Ga4EcommerceTracking(this.previousSearchUrl)
+  }
+
+  LiveSearch.prototype.Ga4EcommerceTracking = function (referrer) {
+    if (GOVUK.analyticsGa4 && GOVUK.analyticsGa4.Ga4EcommerceTracker) {
+      var consentCookie = GOVUK.getConsentCookie()
+
+      if (consentCookie && consentCookie.settings) {
+        GOVUK.analyticsGa4.Ga4EcommerceTracker.init(referrer)
+      } else {
+        window.addEventListener('cookie-consent', function () {
+          GOVUK.analyticsGa4.Ga4EcommerceTracker.init(referrer)
+        })
+      }
+    }
   }
 
   LiveSearch.prototype.getAndUpdateTaxonomyFacet = function getAndUpdateTaxonomyFacet () {
@@ -356,6 +378,7 @@
     var searchState = this.serializeState(this.state)
     var cachedResultData = this.cache(searchState)
     var liveSearch = this
+    this.previousSearchUrl = window.location.href
 
     if (typeof cachedResultData === 'undefined') {
       this.showLoadingIndicator()
@@ -366,9 +389,9 @@
         if (xhr.readyState === 4 && xhr.status === 200) {
           var response = JSON.parse(e.target.response)
           liveSearch.updateUrl()
-          liveSearch.trackSearch()
           liveSearch.cache(liveSearch.serializeState(liveSearch.state), response)
           liveSearch.displayResults(response, searchState)
+          liveSearch.trackSearch()
         } else {
           liveSearch.showErrorIndicator()
         }
@@ -380,8 +403,8 @@
       xhr.send()
     } else {
       this.updateUrl()
-      this.trackSearch()
       this.displayResults(cachedResultData, searchState)
+      this.trackSearch()
     }
   }
 

@@ -24,11 +24,19 @@ Feature: Filtering documents
 
   Scenario: Filter document by keyword
     Given a collection of documents exist
-    When I search documents by keyword
+    When I search documents by keyword: "keyword searchable"
     Then I see all documents which contain the keywords
     And there is not a zero results message
     And the page title is updated
     And I can see that Google won't index the page
+
+  @javascript
+  Scenario: User tries to filter with malicious input
+    Given a collection of documents exist
+    When I search documents by keyword: "<script>alert(0)</script>"
+    Then the page title is updated
+    And there should not be an alert
+    And there is not a zero results message
 
   Scenario: Filter document by keyword with q parameter
     Given a collection of documents exist
@@ -62,14 +70,6 @@ Feature: Filtering documents
     And I can browse to the next page
     And I can see that Google won't index the page
     Then I browse to a huge page number and get an appropriate error
-
-  @javascript
-  Scenario: Pagination is removed when there are no results
-    Given a finder with paginated results exists
-    And I visit the benefits-reform page
-    Then I should see results and pagination
-    When I fill in a keyword that should match no results
-    Then the results and pagination should be removed
 
   Scenario: Visit a finder with metadata
     Given a finder with metadata exists
