@@ -2,7 +2,7 @@
   <meta name="govuk:search-result-count" content="<%= result_set_presenter.total_count %>">
 <% end %>
 
-<div class="finder-results js-finder-results" data-module="gem-track-click">
+<div class="finder-results js-finder-results">
   <% if Rails.configuration.relevancy_prototype && current_page?('/search/all') %>
       <%= render "result" %>
   <% else %>

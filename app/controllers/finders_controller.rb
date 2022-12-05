@@ -6,6 +6,8 @@ class FindersController < ApplicationController
   end
 
   def show
+    slimmer_template "gem_layout_full_width" if i_am_a_topic_page_finder
+
     respond_to do |format|
       format.html do
         raise UnsupportedContentItem unless content_item.is_finder?
@@ -65,7 +67,7 @@ private
     {
       total: result_set_presenter.total_count,
       display_total: result_set_presenter.displayed_total,
-      facet_tags: render_component("facet_tags", facet_tags.present),
+      facet_tags: render_component("finders/facet_tags", facet_tags.present),
       search_results: render_component("finders/search_results", result_set_presenter.search_results_content),
       display_selected_facets_count: facet_tags.display_total_selected_filters,
       sort_options_markup: render_component("finders/sort_options", sort_presenter.to_hash),
@@ -76,7 +78,7 @@ private
   end
 
   def render_component(partial, locals)
-    (render_to_string(formats: %w[html], partial: partial, locals: locals) || "").squish
+    (render_to_string(formats: %i[html], partial: partial, locals: locals) || "").squish
   end
 
   def result_set_presenter

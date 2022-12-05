@@ -7,6 +7,15 @@ class RedirectionController < ApplicationController
     redirect_to(finder_path(params[:slug], params: covid_topic_and_other_params))
   end
 
+  def redirect_latest
+    redirect_params = params.slice(:departments, :topical_events, :world_locations)
+                            .permit(departments: [], topical_events: [], world_locations: [])
+                            .transform_keys { |k| k == "departments" ? "organisations" : k }
+                            .compact
+
+    redirect_to(finder_path("search/all", params: { order: "updated-newest" }.merge(redirect_params)))
+  end
+
   def advanced_search
     conversion_hash =
       {
