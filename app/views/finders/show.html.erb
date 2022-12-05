@@ -57,15 +57,15 @@
       <div class="govuk-grid-column-two-thirds js-live-search-results-block filtered-results"
         role="region"
         aria-label="<%= content_item.title %> search results"
-        <% unless Rails.configuration.relevancy_prototype && current_page?('/search/all') %>
-          data-analytics-ecommerce
-          data-ecommerce-start-index="<%= result_set_presenter.start_offset %>"
-          data-list-title="<%= content_item.title %>"
-          data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
-          <% unless result_set_presenter.sort_option.nil? %>
-            data-ecommerce-variant="<%= result_set_presenter.sort_option[:data_track_label] %>"
-          <% end %>
+        data-analytics-ecommerce
+        data-ga4-ecommerce
+        data-ecommerce-start-index="<%= result_set_presenter.start_offset %>"
+        data-list-title="<%= content_item.title %>"
+        data-search-query="<%= result_set_presenter.user_supplied_keywords %>"
+        <% unless result_set_presenter.sort_option.nil? %>
+          data-ecommerce-variant="<%= result_set_presenter.sort_option[:data_track_label] %>"
         <% end %>
+        data-module="gem-track-click"
         >
         <div id="js-search-results-info" data-module="remove-filter" class="result-info">
           <div class="govuk-grid-row">
@@ -81,9 +81,30 @@
                 <%#= <% render "govuk_publishing_components/components/heading", {
                   text: result_set_presenter.displayed_total,
                   id: "js-result-count",
-                  font_size: "s"
-                  } %> %>
-              </div> -->
+                  font_size: "s",
+                  margin_bottom: 2,
+                  } %>
+
+                <% if content_item.all_content_finder? %>
+                  <%= render partial: 'filter_button'%>
+                <% elsif !content_item.all_content_finder? %>
+                  <% if facets.select(&:filterable?).any? %>
+                    <%= render partial: 'filter_button'%>
+                  <% end %>
+                <% end %>
+
+                <div data-track-category="filterClicked"
+                    data-track-action="skip-Link" data-track-label="">
+                  <%= render "govuk_publishing_components/components/skip_link", {
+                    text: 'Skip to results',
+                    href: '#js-results'}
+                  %>
+                </div>
+              </div>
+            </div>
+
+            <div class="govuk-grid-column-two-thirds subscription-links subscription-links--desktop">
+              <%= render "govuk_publishing_components/components/subscription_links", signup_links %>
             </div>
               <% end %>
               <% unless Rails.configuration.relevancy_prototype %>

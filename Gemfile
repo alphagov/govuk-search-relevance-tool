@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "6.1.5.1"
+gem "rails", "7.0.4"
 
 gem "chronic"
 gem "dalli"
@@ -12,14 +12,10 @@ gem "govuk_publishing_components"
 gem "rest-client"
 gem "sassc-rails"
 gem "slimmer"
+gem "sprockets-rails"
 gem "uglifier"
 gem "whenever"
-gem 'pg', '~> 1.2', '>= 1.2.3'
-
-group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem "sdoc", require: false
-end
+gem "pg"
 
 group :development do
   gem "better_errors"
@@ -42,7 +38,6 @@ group :test do
   gem "climate_control"
   gem "cucumber-rails", require: false
   gem "factory_bot"
-  gem "govuk-content-schema-test-helpers"
   gem "launchy"
   gem "rails-controller-testing"
   gem "simplecov"

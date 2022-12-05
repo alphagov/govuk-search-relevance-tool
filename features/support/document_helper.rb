@@ -15,7 +15,7 @@ module DocumentHelper
   include GdsApi::TestHelpers::ContentStore
   include GdsApi::TestHelpers::Worldwide
 
-  SEARCH_ENDPOINT = "#{Plek.current.find('search')}/search.json".freeze
+  SEARCH_ENDPOINT = "#{Plek.find('search-api')}/search.json".freeze
 
   def stub_taxonomy_api_request
     stub_content_store_has_item("/", "links" => { "level_one_taxons" => [] })
@@ -31,9 +31,9 @@ module DocumentHelper
       .to_return(body: hopscotch_reports_json)
   end
 
-  def stub_keyword_search_api_request
+  def stub_keyword_search_api_request(term)
     stub_request(:get, SEARCH_ENDPOINT)
-      .with(query: rummager_keyword_search_params)
+      .with(query: hash_including(mosw_search_params.merge("q" => term)))
       .to_return(body: keyword_search_results)
   end
 
@@ -157,7 +157,7 @@ module DocumentHelper
 
   def stub_search_api_request_with_filtered_research_and_statistics_results
     Timecop.freeze(Time.zone.local("2019-01-01").utc)
-    stub_request(:get, "#{Plek.current.find('search')}/search.json")
+    stub_request(:get, "#{Plek.find('search-api')}/search.json")
       .with(query: hash_including(
         "filter_format" => %w[statistics_announcement],
         "filter_release_timestamp" => "from:2019-01-01",
@@ -470,13 +470,6 @@ module DocumentHelper
   def rummager_hopscotch_walks_params
     mosw_search_params.merge(
       "filter_walk_type" => %w[hopscotch],
-      "order" => "-public_timestamp",
-    )
-  end
-
-  def rummager_keyword_search_params
-    mosw_search_params.merge(
-      "q" => "keyword searchable",
       "order" => "-public_timestamp",
     )
   end

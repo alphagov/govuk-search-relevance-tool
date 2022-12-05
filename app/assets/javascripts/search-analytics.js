@@ -1,4 +1,4 @@
-if (window.relevancyPrototype === false) {
+if (window.relevancyPrototype === nil) {
   (function (global, GOVUK) {
     'use strict'
 
