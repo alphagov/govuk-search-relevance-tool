@@ -129,6 +129,10 @@ GEM
       webrick (~> 1.7)
     cucumber-tag-expressions (4.1.0)
     dalli (3.2.3)
+    database_cleaner-active_record (2.0.1)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     debug_inspector (1.1.0)
     declarative (0.0.20)
     diff-lcs (1.5.0)
@@ -148,7 +152,7 @@ GEM
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.1)
     ffi (1.15.5)
-    gds-api-adapters (84.0.0)
+    gds-api-adapters (85.0.0)
       addressable
       link_header
       null_logger
@@ -261,6 +265,7 @@ GEM
     parallel (1.22.1)
     parser (3.1.2.1)
       ast (~> 2.4.1)
+    pg (1.4.5)
     plek (4.1.0)
     prometheus_exporter (2.0.6)
       webrick
