@@ -1,6 +1,7 @@
 #!/bin/bash
 LOCAL_DATABASE="`date +%d_%m_%y_%H%M%S`"
-heroku pg:pull postgresql-triangular-56729 $LOCAL_DATABASE --app search-result-relevancy
+HEROKU_DATABASE=$1
+heroku pg:pull $HEROKU_DATABASE $LOCAL_DATABASE --app govuk-search-relevance-tool
 echo '... database dump complete'
 `mkdir -p ~/tmp/relevancy_judgements`
 echo '... exporting pg database to csv'
